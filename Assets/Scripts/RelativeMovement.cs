@@ -25,7 +25,7 @@ public class RelativeMovement : MonoBehaviour
     void Start() {
         _body = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _gravity = Physics.gravity * 7;
+        _gravity = Physics.gravity * 3;
         _isJumping = false;
     }
 
@@ -77,7 +77,7 @@ public class RelativeMovement : MonoBehaviour
 
 
         if(Input.GetButton("Jump")) {
-            Physics.gravity = _gravity * 0.75f;
+            Physics.gravity = _gravity * 0.2f;
         }
         if(Input.GetButtonUp("Jump")) {
             Physics.gravity = _gravity;
