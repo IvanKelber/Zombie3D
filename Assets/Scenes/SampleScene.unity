@@ -1294,6 +1294,7 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 256
+  dashSpeed: 40
 --- !u!54 &724161176
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1303,7 +1304,7 @@ Rigidbody:
   m_GameObject: {fileID: 724161172}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 3
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -2633,7 +2634,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717004437}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d7108c37d8c24eb38355f2d534e07be, type: 3}
   m_Name: 
@@ -2644,6 +2645,7 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 256
+  dashSpeed: 20
 --- !u!23 &1717004441
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3109,12 +3111,16 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 2a51da8070c55495a9cc253850614b50, type: 2}
     - target: {fileID: 9500000, guid: 1d6dec27ae39bb447b8a0ada31d13664, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: 1d6dec27ae39bb447b8a0ada31d13664, type: 3}
       propertyPath: m_UpdateMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 1d6dec27ae39bb447b8a0ada31d13664, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: e42d9259129992a4d95e0b320ca2a43d, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d6dec27ae39bb447b8a0ada31d13664, type: 3}
 --- !u!1 &2063680383 stripped

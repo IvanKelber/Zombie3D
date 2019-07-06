@@ -19,6 +19,7 @@ public class RelativeMovement : MonoBehaviour
     public LayerMask Ground;
     private Vector3 _gravity;
     private bool _isJumping;
+    public float dashSpeed = 20.0f;
 
 
     void Start() {
@@ -53,6 +54,7 @@ public class RelativeMovement : MonoBehaviour
         //update animation
         _animator.SetFloat("speed",_movement.sqrMagnitude);
         _animator.SetBool("isJumping", _isJumping);
+        _animator.SetBool("isDashing", false);
 
 
         // Handle vertical movement
@@ -66,6 +68,11 @@ public class RelativeMovement : MonoBehaviour
             } else {
                 _isJumping = false;
             }
+
+            if(Input.GetKeyDown(KeyCode.LeftShift)) {
+                _body.AddForce(this.transform.forward * dashSpeed, ForceMode.VelocityChange);
+                _animator.SetBool("isDashing", true);
+            }
         }
 
 
@@ -75,6 +82,8 @@ public class RelativeMovement : MonoBehaviour
         if(Input.GetButtonUp("Jump")) {
             Physics.gravity = _gravity;
         }
+
+
     
         //end vertical movement
     }
