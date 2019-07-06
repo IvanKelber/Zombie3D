@@ -2,93 +2,85 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class RelativeMovement : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    private CharacterController _character;
+    private Rigidbody _body;
     private float rotationSpeed = 15.0f;
     private float movementSpeed = 9.0f;
 
     //Physics
-    public float gravity = -9.8f;
-    public float jumpVelocity = 35.0f;
-    public float terminalVelocity = 12.0f;
-    public float minFall = -1.5f;
-
-    private float _vertSpeed;
-
-    private ControllerColliderHit _contact;
+    public float JumpHeight = 3.0f;
     private Animator _animator;
+    private Vector3 _movement;
+    private float GroundDistance = 0.2f;
+    [SerializeField] private Transform _groundChecker;
+    public LayerMask Ground;
+    private Vector3 _gravity;
+    private bool _isJumping;
+
 
     void Start() {
-        _character = GetComponent<CharacterController>();
-        _vertSpeed = minFall;
+        _body = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-
+        _gravity = Physics.gravity * 7;
+        _isJumping = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 movement = Vector3.zero;
+        _movement = Vector3.zero;
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
         if(horizontal != 0 || vertical != 0) {
-            movement.x = horizontal * movementSpeed;
-            movement.z = vertical * movementSpeed;
-            movement = Vector3.ClampMagnitude(movement, movementSpeed);
+            _movement.x = horizontal * movementSpeed;
+            _movement.z = vertical * movementSpeed;
+            _movement = Vector3.ClampMagnitude(_movement, movementSpeed);
 
             Quaternion tmp = target.rotation;
             target.eulerAngles = new Vector3(0, target.eulerAngles.y, 0);
-            movement = target.TransformDirection(movement);
+            _movement = target.TransformDirection(_movement);
             target.rotation = tmp;
 
             // Lerping rotation
-            Quaternion direction = Quaternion.LookRotation(movement);
+            Quaternion direction = Quaternion.LookRotation(_movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotationSpeed * Time.deltaTime);
         }
 
         //update animation
-        _animator.SetFloat("playerSpeed",movement.sqrMagnitude);
+        _animator.SetFloat("speed",_movement.sqrMagnitude);
+        _animator.SetBool("isJumping", _isJumping);
+
 
         // Handle vertical movement
-        bool hitGround = false;
-        RaycastHit hit;
-        if(_vertSpeed < 0 && Physics.Raycast(transform.position, Vector3.down, out hit)) {
-            float check = 1.8f; //Hardcoded this check cuz there was a bug and I was tired.  *shrug*
-            hitGround = hit.distance <= check;
-        }
+
+        bool hitGround = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
+
         if(hitGround) {
             if(Input.GetButtonDown("Jump")) {
-                _vertSpeed = jumpVelocity;
+                _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+                _isJumping = true;
             } else {
-                _vertSpeed = minFall;
-            }
-        } else {
-            _vertSpeed += gravity * Time.deltaTime * 5;
-            if(_vertSpeed > terminalVelocity) {
-                _vertSpeed = terminalVelocity;
-            }
-            if(_character.isGrounded) {
-                if(Vector3.Dot(_contact.normal, movement) < 0) {
-                    movement = _contact.normal * movementSpeed;
-                } else  {
-                    movement += _contact.normal * movementSpeed;
-                }
+                _isJumping = false;
             }
         }
-        movement.y = _vertSpeed;
+
+
+        if(Input.GetButton("Jump")) {
+            Physics.gravity = _gravity * 0.75f;
+        }
+        if(Input.GetButtonUp("Jump")) {
+            Physics.gravity = _gravity;
+        }
+    
         //end vertical movement
-
-        movement *= Time.deltaTime;
-        _character.Move(movement);
-
- 
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit) {
-        _contact = hit;
+    private void FixedUpdate() {
+        _movement *= Time.fixedDeltaTime;
+        _body.MovePosition(_body.position + _movement);
     }
 }
