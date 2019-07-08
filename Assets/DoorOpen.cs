@@ -30,11 +30,35 @@ public class DoorOpen : MonoBehaviour
             from = closedState;
             to = openState;
         }
+        _open = !_open;
+        initLerping();
+    }
+
+    public void Activate() {
+        if(!_open) {
+            from = closedState;
+            to = openState;
+        }
+        _open = true;
+        initLerping();
+    }
+
+      public void Deactivate() {
+        if(_open) {
+            from = openState;
+            to = closedState;
+        }
+        _open = false;
+        initLerping();
+    }  
+
+    public void initLerping() {
         percentage = 0f;
         _moving = true;
-        _open = !_open;
         _timeStartedLerping = Time.time;
     }
+
+
 
     void Update() {
         if(_moving) {
