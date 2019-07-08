@@ -19,6 +19,7 @@ public class RelativeMovement : MonoBehaviour
     private float fallMultiplier = 10.5f;
     private float GroundDistance = 0.2f;
     public float dashSpeed = 20.0f;
+    public float collisionForce = 3.0f;
 
     void Start() {
         _body = GetComponent<Rigidbody>();
@@ -53,7 +54,6 @@ public class RelativeMovement : MonoBehaviour
         _animator.SetFloat("speed",_movement.sqrMagnitude);
         _animator.SetBool("isJumping", _isJumping);
         _animator.SetBool("isDashing", false);
-
 
         // Handle vertical movement
 
@@ -93,4 +93,5 @@ public class RelativeMovement : MonoBehaviour
         _movement *= Time.fixedDeltaTime;
         _body.MovePosition(_body.position + _movement);
     }
+
 }
