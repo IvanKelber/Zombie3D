@@ -71,7 +71,7 @@ public class RelativeMovement : MonoBehaviour
                 _body.AddForce(this.transform.forward * dashSpeed, ForceMode.VelocityChange);
                 _animator.SetBool("isDashing", true);
             }
-        }
+        } 
 
         if(_body.velocity.y < 0 || (_body.velocity.y > 0 && !Input.GetButton("Jump"))) {
             Vector3 force = Vector3.up + (Physics.gravity * fallMultiplier);
@@ -83,7 +83,10 @@ public class RelativeMovement : MonoBehaviour
 
     private bool isGrounded() {
         RaycastHit hit;
+        print("position: " + transform.position);
+
         if(Physics.Raycast(transform.position, Vector3.down, out hit)) {
+            print("hit distance: " + hit.distance);
             return hit.distance < GroundDistance + _collider.bounds.size.y/2;
         }
         return false;
