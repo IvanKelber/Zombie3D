@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeviceOperator : MonoBehaviour
 {
-    private float operateDistance = 1.5f;
+    private float operateDistance = 2.5f;
 
     // Update is called once per frame
     void Update()

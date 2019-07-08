@@ -83,10 +83,10 @@ public class RelativeMovement : MonoBehaviour
 
     private bool isGrounded() {
         RaycastHit hit;
-        print("position: " + transform.position);
+        // print("position: " + transform.position);
 
         if(Physics.Raycast(transform.position, Vector3.down, out hit)) {
-            print("hit distance: " + hit.distance);
+            // print("hit distance: " + hit.distance);
             return hit.distance < GroundDistance + _collider.bounds.size.y/2;
         }
         return false;
