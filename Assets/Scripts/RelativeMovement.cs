@@ -7,25 +7,23 @@ public class RelativeMovement : MonoBehaviour
 {
     [SerializeField] private Transform target;
     private Rigidbody _body;
+    private Collider _collider;
+    private Vector3 _movement;
+    private Animator _animator;
     private float rotationSpeed = 15.0f;
     private float movementSpeed = 9.0f;
+    private bool _isJumping;
 
     //Physics
-    public float JumpHeight = 3.0f;
-    private Animator _animator;
-    private Vector3 _movement;
+    public float JumpHeight = 20.0f;
+    private float fallMultiplier = 10.5f;
     private float GroundDistance = 0.2f;
-    [SerializeField] private Transform _groundChecker;
-    public LayerMask Ground;
-    private Vector3 _gravity;
-    private bool _isJumping;
     public float dashSpeed = 20.0f;
-
 
     void Start() {
         _body = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _gravity = Physics.gravity * 3;
+        _collider = GetComponent<Collider>();
         _isJumping = false;
     }
 
@@ -59,11 +57,11 @@ public class RelativeMovement : MonoBehaviour
 
         // Handle vertical movement
 
-        bool hitGround = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
+        bool hitGround = isGrounded();
 
         if(hitGround) {
             if(Input.GetButtonDown("Jump")) {
-                _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+                _body.AddForce(Vector3.up * JumpHeight, ForceMode.VelocityChange);
                 _isJumping = true;
             } else {
                 _isJumping = false;
@@ -75,17 +73,20 @@ public class RelativeMovement : MonoBehaviour
             }
         }
 
-
-        if(Input.GetButton("Jump")) {
-            Physics.gravity = _gravity * 0.2f;
+        if(_body.velocity.y < 0 || (_body.velocity.y > 0 && !Input.GetButton("Jump"))) {
+            Vector3 force = Vector3.up + (Physics.gravity * fallMultiplier);
+            _body.AddForce(force, ForceMode.Acceleration);
         }
-        if(Input.GetButtonUp("Jump")) {
-            Physics.gravity = _gravity;
-        }
-
-
     
         //end vertical movement
+    }
+
+    private bool isGrounded() {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, Vector3.down, out hit)) {
+            return hit.distance < GroundDistance + _collider.bounds.size.y/2;
+        }
+        return false;
     }
 
     private void FixedUpdate() {
