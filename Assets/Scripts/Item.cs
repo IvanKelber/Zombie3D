@@ -17,7 +17,6 @@ public class Item
         for(int i = 0; i < name.Length; i++) {
             number += ((int) name[i]) * ( 10<< i);
         } 
-        Debug.Log("IEVK" + number);
         return number;
     }
 

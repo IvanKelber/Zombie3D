@@ -29,4 +29,24 @@ public class InventoryManager : MonoBehaviour, IGameManager
 
         DisplayInventory();
     }
+
+    public List<Item> GetItemList() {
+        return new List<Item>(_inventory.Keys);
+    }
+
+    public int GetItemCount(Item item) {
+        if(_inventory.ContainsKey(item)) {
+            return _inventory[item];
+        }
+        return 0;
+    }
+
+    public void RemoveItem(Item item) {
+        if(_inventory.ContainsKey(item)) {
+            _inventory[item] -= 1;
+            if(_inventory[item] == 0) {
+                _inventory.Remove(item);
+            }
+        }
+    }
 }
