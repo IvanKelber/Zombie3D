@@ -108,7 +108,9 @@ public class RelativeMovement : MonoBehaviour
     }
 
     IEnumerator UseEnergy() {
-        Instantiate(EnergyEffect, transform.position) as GameObject;
+        GameObject effect = Instantiate(EnergyEffect.gameObject, new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z), transform.rotation) as GameObject;
+        yield return new WaitForSeconds(2);
+        Destroy(effect);
     }
 
 }
