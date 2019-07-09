@@ -4768,6 +4768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 100
+  name: energy
 --- !u!65 &3730751822166279399
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -6,19 +6,19 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerManager))]
 public class Managers : MonoBehaviour
 {
-    public static InventoryManager inventoryManager {get; private set;}
-    public static PlayerManager playerManager {get; private set;}
+    public static InventoryManager Inventory {get; private set;}
+    public static PlayerManager Player {get; private set;}
 
     private List<IGameManager> _startSequence;
 
     void Awake()
     {
-        inventoryManager = GetComponent<InventoryManager>();
-        playerManager = GetComponent<PlayerManager>();
+        Inventory = GetComponent<InventoryManager>();
+        Player = GetComponent<PlayerManager>();
 
         _startSequence = new List<IGameManager>();
-        _startSequence.Add(inventoryManager);
-        _startSequence.Add(playerManager);
+        _startSequence.Add(Inventory);
+        _startSequence.Add(Player);
 
         StartCoroutine(StartupManagers());
     }

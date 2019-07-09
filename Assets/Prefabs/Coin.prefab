@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 102
+  name: coin
 --- !u!65 &2420697015056096128
 BoxCollider:
   m_ObjectHideFlags: 0

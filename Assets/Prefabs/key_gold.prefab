@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 101
+  name: key
 --- !u!65 &6026858493843342873
 BoxCollider:
   m_ObjectHideFlags: 0
