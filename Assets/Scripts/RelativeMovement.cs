@@ -21,6 +21,8 @@ public class RelativeMovement : MonoBehaviour
     public float dashSpeed = 20.0f;
     public float collisionForce = 3.0f;
 
+    [SerializeField] private ParticleSystem EnergyEffect;
+
     void Start() {
         _body = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
@@ -79,6 +81,14 @@ public class RelativeMovement : MonoBehaviour
         }
     
         //end vertical movement
+
+        if(Input.GetKeyDown(KeyCode.K)) {
+            Item equipped = Managers.Inventory.equippedItem;
+            if(equipped.id == ItemId.Energy) {
+                Managers.Inventory.RemoveItem(equipped);
+                StartCoroutine(UseEnergy());
+            }
+        }
     }
 
     private bool isGrounded() {
@@ -95,6 +105,10 @@ public class RelativeMovement : MonoBehaviour
     private void FixedUpdate() {
         _movement *= Time.fixedDeltaTime;
         _body.MovePosition(_body.position + _movement);
+    }
+
+    IEnumerator UseEnergy() {
+        Instantiate(EnergyEffect, transform.position) as GameObject;
     }
 
 }
